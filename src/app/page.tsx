@@ -40,7 +40,7 @@ export default function Home() {
           loop
           playsInline
         >
-          <source src="/content/Home.mp4" type="video/mp4" />
+          <source src="/content/homee480p.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
@@ -48,7 +48,7 @@ export default function Home() {
       {/* Overlay Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-screen px-4">
         <h1 className="text-4xl md:text-6xl font-bold text-white text-center mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-          Find A Stretch Coach
+          Assisted Stretching In Your Home
         </h1>
         <form className="flex items-center bg-white rounded-full shadow-md px-4 py-2 w-fit">
           <div className="flex items-center space-x-2 text-gray-700">
@@ -75,10 +75,10 @@ export default function Home() {
         </form>
         <div className="text-white text-center mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mt-10">
           <p className="text-xl md:text-4xl mb-3">
-          Flexiblity is our Game. 
+          Stretching is our Game. 
           </p>
           <p className="text-lg md:text-xl">
-          One of our professional coaches will come to your home for a peaceful assisted stretch session. 
+          A professional stretch coach will come to your home for a peaceful assisted stretch session. 
           </p>
           </div>
       </div>
