@@ -6,7 +6,7 @@ import { MapPinIcon } from "@heroicons/react/24/solid";
 
 export default function Home() {
   const [zip, setZip] = useState("");
-
+  const [hasRequestedLocation, setHasRequestedLocation] = useState(false);
   const detectZip = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
@@ -25,9 +25,9 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
-    detectZip();
-  }, []);
+  // useEffect(() => {
+  //   detectZip();
+  // }, []);
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
@@ -59,6 +59,12 @@ export default function Home() {
               type="text"
               placeholder="ZIP"
               value={zip}
+              onFocus={() => {
+                if (!zip && !hasRequestedLocation) {
+                  setHasRequestedLocation(true);
+                  detectZip();
+                }
+              }}
               onChange={(e) => {
                 const input = e.target.value;
                 if (/^\d{0,5}$/.test(input)) setZip(input);
@@ -75,12 +81,12 @@ export default function Home() {
         </form>
         <div className="text-white text-center mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mt-10">
           <p className="text-xl md:text-4xl mb-3">
-          Stretching is our Game. 
+            Stretching is our Game.
           </p>
           <p className="text-lg md:text-xl">
-          A professional stretch coach will come to your home for a peaceful assisted stretch session. 
+            A professional stretch coach will come to your home for a peaceful assisted stretch session.
           </p>
-          </div>
+        </div>
       </div>
     </div>
   );

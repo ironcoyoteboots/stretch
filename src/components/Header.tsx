@@ -9,7 +9,7 @@ export default function Header() {
                 <div className="text-2xl md:text-4xl text-gray-800">
                     <span className="font-extrabold">big</span><span className="font-light">stretch</span>
                 </div>
-                <nav className="space-x-4 text-gray-700 uppercase">
+                <nav className="space-x-2 md:space-x-4 text-gray-700 uppercase text-sm md:text-lg">
                     <a href="#" className="hover:text-cyan-600 align-middle">Services</a>
                     <a href="#" className="hover:text-cyan-600 font-semibold align-middle">Be a Coach</a>
                     <a href="#" className="hover:text-cyan-600 inline-flex items-center gap-1 align-middle">
