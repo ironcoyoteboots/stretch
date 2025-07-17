@@ -73,6 +73,14 @@ export default function Home() {
             Search
           </button>
         </form>
+        <div className="text-white text-center mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] mt-10">
+          <p className="text-xl md:text-4xl mb-3">
+          Flexiblity is our Game. 
+          </p>
+          <p className="text-lg md:text-xl">
+          One of our professional coaches will come to your home for a peaceful assisted stretch session. 
+          </p>
+          </div>
       </div>
     </div>
   );
