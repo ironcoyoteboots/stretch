@@ -40,7 +40,7 @@ export default function Home() {
           loop
           playsInline
         >
-          <source src="/content/home.mp4" type="video/mp4" />
+          <source src="/content/Home.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
