@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Provider {
+  id              String           @id @default(cuid())
+  firstName       String
+  lastName        String
+  bio             String?
+  email           String           @unique
+  phone           String?
+  photo           String?          // URL
+  activeAt        DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  specialties     Speciality[]
+  availabilityDays AvailabilityDay[]
+  blackOutDates   BlackOutDate[]
+  reviews         Review[]
+  login           Login[]
+  taxForms        TaxForm1099[]
+  sessionTimes    SessionTime[]
+}
+
+model Speciality {
+  id          String    @id @default(cuid())
+  name        String
+  provider    Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId  String
+}
+
+model AvailabilityDay {
+  id          String    @id @default(cuid())
+  dayOfWeek   Int       // 0 = Sunday, 6 = Saturday
+  startHour   Int       // 24h format (e.g. 9)
+  endHour     Int       // (e.g. 17)
+  provider    Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId  String
+}
+
+model BlackOutDate {
+  id          String    @id @default(cuid())
+  date        DateTime
+  reason      String?
+  provider    Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId  String
+}
+
+model Review {
+  id          String    @id @default(cuid())
+  reviewerName String
+  rating      Int       // e.g. 1–5
+  comment     String?
+  createdAt   DateTime  @default(now())
+  provider    Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId  String
+}
+
+model Login {
+  id            String    @id @default(cuid())
+  provider      Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId    String
+  oauthProvider String    // e.g. "google", "linkedin"
+  oauthId       String    // the user’s ID from that provider
+  accessToken   String?
+  refreshToken  String?
+  createdAt     DateTime  @default(now())
+}
+
+model TaxForm1099 {
+  id          String    @id @default(cuid())
+  provider    Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId  String
+  taxYear     Int
+  submittedAt DateTime?
+  fileUrl     String?
+}
+
+model SessionTime {
+  id          String    @id @default(cuid())
+  minutes     Int       // e.g. 30, 45, 60
+  provider    Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  providerId  String
+}
