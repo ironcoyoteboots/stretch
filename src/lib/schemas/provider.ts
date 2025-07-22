@@ -9,6 +9,8 @@ export const providerSchema = z.object({
         'Invalid phone number'
     ),
     bio: z.string().min(1, { message: 'Bio must be at least 20 characters' }),
+    status: z.enum(['pending', 'approved', 'paused', 'inactive', 'rejected']).default('pending'), // ✅ default status
+    role: z.enum(['new', 'allstar', 'ambassador']).default('new')
 });
 
 export type ProviderInput = z.infer<typeof providerSchema>;
