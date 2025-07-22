@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { ProviderInput, providerSchema } from '@/lib/schemas/provider';
-import { treeifyError } from 'zod';
 
 type ProviderAccountFormProps = {
   initialValues?: ProviderInput;
@@ -24,8 +23,8 @@ export default function ProviderAccountForm({
     email: '',
     phone: '',
     bio: '',
-    status: 'pending', 
-    role: 'new'        
+    status: 'pending',
+    role: 'new'
   };
 
   const [formData, setFormData] = useState<ProviderInput>({
@@ -60,9 +59,9 @@ export default function ProviderAccountForm({
     }
 
     console.log('💬 initialValues', initialValues);
-console.log('📦 formData', formData);
+    console.log('📦 formData', formData);
 
-    
+
 
     try {
       const response = await fetch(onSubmitUrl, {
@@ -75,7 +74,7 @@ console.log('📦 formData', formData);
         setStatus('success');
         setErrors({});
         if (mode === 'create') {
-          setFormData({ firstName: '', lastName: '', email: '', phone: '', bio: '' });
+          setFormData(defaultValues);
         }
       } else {
         const errorBody = await response.json();
