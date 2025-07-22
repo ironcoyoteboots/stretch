@@ -64,27 +64,40 @@ export default function ProviderAccountForm({
 
 
     try {
-      const response = await fetch(onSubmitUrl, {
+      const res = await fetch(onSubmitUrl, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(result.data),
       });
 
-      if (response.ok) {
+      if (res.ok) {
         setStatus('success');
         setErrors({});
         if (mode === 'create') {
           setFormData(defaultValues);
         }
       } else {
-        const errorBody = await response.json();
-        console.error('Server error:', errorBody);
+        const errorBody = await res.json();
+
+        if (res.status === 409 && errorBody.code === 'P2002') {
+          const field = errorBody.field;
+          if (field === 'email') {
+            setErrors({ email: 'An account with this email already exists.' });
+          } else {
+            setErrors({ form: `Duplicate value for field: ${field}` });
+          }
+        } else {
+          setErrors({ form: errorBody.error || 'Unexpected server error.' });
+        }
+
         setStatus('error');
       }
     } catch (error) {
       console.error('Submit failed', error);
+      setErrors({ form: 'Network error. Please try again.' });
       setStatus('error');
     }
+
   };
 
   const inputClass = "w-full border p-2 rounded-xl";
@@ -165,10 +178,13 @@ export default function ProviderAccountForm({
       </div>
 
 
+      {errors.form && (
+        <p className="text-red-600 text-sm text-center">{errors.form}</p>
+      )}
 
       {status === 'success' && (
         <p className="text-green-600 mt-2">
-          {mode === 'edit' ? 'Account updated successfully!' : 'Account created successfully!'}
+          {mode === 'edit' ? 'Account updated successfully!' : 'Account created successfully! An admin will review your account and approve it shortly.'}
         </p>
       )}
       {status === 'error' && (

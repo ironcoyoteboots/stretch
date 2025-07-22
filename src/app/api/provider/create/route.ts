@@ -1,5 +1,8 @@
+// /api/provider/create/route.ts
+'use server';
+
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma'; // adjust path if needed
+import { prisma } from '@/lib/prisma';
 import { providerSchema } from '@/lib/schemas/provider';
 
 export async function POST(req: Request) {
@@ -7,7 +10,10 @@ export async function POST(req: Request) {
   const result = providerSchema.safeParse(body);
 
   if (!result.success) {
-    return NextResponse.json({ error: 'Invalid input', details: result.error }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Invalid input', details: result.error },
+      { status: 400 }
+    );
   }
 
   try {
@@ -16,8 +22,19 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(provider, { status: 200 });
-  } catch (error) {
-    console.error('DB error:', error);
-    return NextResponse.json({ error: 'Server error', details: error }, { status: 500 });
+  } catch (err: any) {
+    if (err.code === 'P2002') {
+      return NextResponse.json(
+        {
+          error: 'Unique constraint failed',
+          code: 'P2002',
+          field: err.meta?.target?.[0] || 'unknown',
+        },
+        { status: 409 }
+      );
+    }
+
+    console.error('Unhandled DB error:', err);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
