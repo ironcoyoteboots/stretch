@@ -11,12 +11,15 @@ model Provider {
   id              String           @id @default(cuid())
   firstName       String
   lastName        String
-  status          String
-  role            String
+
   bio             String?
   email           String           @unique
   phone           String?
   photo           String?          // URL
+
+  status    String   @default("pending")
+  role      String   @default("new")
+  
   activeAt        DateTime?
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
