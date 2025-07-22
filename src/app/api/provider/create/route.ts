@@ -1,9 +1,9 @@
-// /api/provider/create/route.ts
 'use server';
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { providerSchema } from '@/lib/schemas/provider';
+import { Prisma } from '@prisma/client';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -22,13 +22,19 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json(provider, { status: 200 });
-  } catch (err: any) {
-    if (err.code === 'P2002') {
+  } catch (err: unknown) {
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === 'P2002'
+    ) {
       return NextResponse.json(
         {
           error: 'Unique constraint failed',
-          code: 'P2002',
-          field: err.meta?.target?.[0] || 'unknown',
+          code: err.code,
+          field:
+            Array.isArray((err as Prisma.PrismaClientKnownRequestError).meta?.target)
+              ? ((err as Prisma.PrismaClientKnownRequestError).meta!.target as string[])[0]
+              : 'unknown',
         },
         { status: 409 }
       );
