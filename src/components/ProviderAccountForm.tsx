@@ -24,6 +24,8 @@ export default function ProviderAccountForm({
     email: '',
     phone: '',
     bio: '',
+    status: 'pending', 
+    role: 'new'        
   };
 
   const [formData, setFormData] = useState<ProviderInput>({
